@@ -74,7 +74,7 @@ target_include_directories(libvcs3
 )
 
 target_sources(libvcs3 PRIVATE
-  "src/data.cc"
+  "src/hashid.cc"
 )
 
 target_sources(libvcs3 PRIVATE
@@ -88,9 +88,11 @@ target_sources(libvcs3 PRIVATE
 
 target_link_libraries(libvcs3 PUBLIC
   contrib-flatbuffers
+  contrib-sha
 )
 
 # Tests.
 if(LIBVCS_BUILD_TESTS)
   enable_testing()
+  add_subdirectory(ut)
 endif()
