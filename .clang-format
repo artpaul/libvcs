@@ -1,0 +1,25 @@
+---
+Language: Proto
+BasedOnStyle: Google
+
+---
+Language: Cpp
+BasedOnStyle: Google
+
+AlignAfterOpenBracket: DontAlign
+AllowShortFunctionsOnASingleLine: None
+BreakConstructorInitializers: BeforeComma
+ColumnLimit: 108
+FixNamespaceComments: true
+IndentPPDirectives: AfterHash
+PPIndentWidth: 1
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+ReflowComments: true
+SortIncludes: CaseSensitive
+SpacesBeforeTrailingComments: 1
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: 1
+Standard: c++20
+UseTab: Never
