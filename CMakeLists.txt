@@ -30,6 +30,66 @@ endif()
 # C++ standard and compiler options.
 add_subdirectory(contrib EXCLUDE_FROM_ALL)
 
+# Determine whether this is a standalone project or
+# included by other projects.
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  # Setup C++ standard for the project.
+  set(CMAKE_CXX_STANDARD 23)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+  set(CMAKE_CXX_EXTENSIONS OFF)
+
+  set(LIBVCS_BUILD_TESTS ON)
+elseif(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 23)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
+
+set(LIBVCS_PUBLIC_INCLUDE_DIR "include/libvcs")
+
+add_library(libvcs3 STATIC)
+
+add_dependencies(libvcs3 flatc)
+
+target_include_directories(libvcs3 PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+
+include(generate_fbs)
+
+generate_fbs(${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/blob)
+generate_fbs(${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/commit)
+generate_fbs(${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/renames)
+generate_fbs(${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/tag)
+generate_fbs(${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/tree)
+generate_fbs(${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/types)
+
+target_include_directories(libvcs3
+  SYSTEM PUBLIC
+    # Flatbuffers includes.
+    "${CMAKE_BINARY_DIR}"
+  PUBLIC
+    # Third party includes.
+    "contrib"
+)
+
+target_sources(libvcs3 PRIVATE
+  "src/data.cc"
+)
+
+target_sources(libvcs3 PRIVATE
+  "${CMAKE_CURRENT_BINARY_DIR}/${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/blob.fb.h"
+  "${CMAKE_CURRENT_BINARY_DIR}/${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/commit.fb.h"
+  "${CMAKE_CURRENT_BINARY_DIR}/${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/renames.fb.h"
+  "${CMAKE_CURRENT_BINARY_DIR}/${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/types.fb.h"
+  "${CMAKE_CURRENT_BINARY_DIR}/${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/tree.fb.h"
+  "${CMAKE_CURRENT_BINARY_DIR}/${LIBVCS_PUBLIC_INCLUDE_DIR}/fbs/types.fb.h"
+)
+
+target_link_libraries(libvcs3 PUBLIC
+  contrib-flatbuffers
+)
+
 # Tests.
 if(LIBVCS_BUILD_TESTS)
   enable_testing()

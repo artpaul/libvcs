@@ -1,0 +1,19 @@
+namespace Fbs;
+
+table Part {
+  /// Identifier of the object.
+  id:[ubyte];
+
+  /// Size of the object.
+  size:uint64;
+}
+
+table Blob {
+  /// Identfier of the original blob.
+  id:[ubyte];
+
+  /// Blob's parts.
+  parts:[Part];
+}
+
+root_type Blob;
