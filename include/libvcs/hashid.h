@@ -11,7 +11,7 @@
 #include <string_view>
 
 #include "data.h"
-#include "libvcs/util/hex.h"
+#include "util/hex.h"
 
 namespace vcs {
 

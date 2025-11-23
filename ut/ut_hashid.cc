@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <libvcs/object/hashid.h>
+#include <libvcs/hashid.h>
 
 #include <sstream>
 

@@ -1,4 +1,4 @@
-#include "libvcs/object/hashid.h"
+#include "libvcs/hashid.h"
 
 #include <sha/sha256.h>
 
